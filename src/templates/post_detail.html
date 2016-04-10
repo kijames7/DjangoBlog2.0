@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+
+{% block head_title %}{{ instance.title }} | {{ block.super }} {%endblock head_title %}
+
+<style>
+{% block style %}
+h1 {
+	color:#008080;
+}
+
+body {
+		background-color: #58ACFA;
+        /*background-image: url("http://wallpaperfast.com/wp-content/uploads/2013/05/Good-evening-backgrounds-Desktop-for-Mac-wallpaper.jpg");*/
+        /*background-image: url("http://4.bp.blogspot.com/-S4bebn-H0Fg/UBZ0an93DyI/AAAAAAAAD2k/G9kA9ASTQKU/s1600/animated+wallpaper+for+ipad.png");*/
+}
+{% endblock style%}
+</style>
+
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-3'>
+	{% if instance.image %}
+		<img src='{{ instance.image.url }}' class='img-responsive' />
+	{% endif %}
+<!-- <h1>{{ title }} <small> {{ instance.created_date }}</small></h1>-->
+<h1>{{ title }} <small>{% if instance.draft %}<span style='color:red;'>Status: DRAFT</span> {% endif %}{{ instance.publish }}</small></h1>
+{% if instance.user.get_full_name %}
+<p>Superuser and/or Admin: {{ instance.user.get_full_name }}</p>
+{% endif %}
+<!--facebook like button-->
+<p><div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div><br/>
+
+<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
+Share post Facebook
+</a><br/>
+
+<a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}>
+Share post Twitter
+</a><br/>
+
+<a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}>
+
+<a href="https://www.linkedin.com/shareArticle?mini=true&url=http://swiftforentrepreneurs.com/&title={{ instance.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}>
+Share post Linkedin
+</a><br/>
+
+<a href="http://www.reddit.com/submit?url=http:{{ request.build_absolute_uri }}/&title={{ share_string }}.">Share post Reddit</a><br/>
+
+<div class='row'>
+<div class='col-sm-12'>
+
+Content:
+{{ instance.body|linebreaks }}
+Author(s):
+{{ instance.author }}<br/>
+<!-- {{ instance.categories }}<br/>
+ --><!-- {{ instance.tags }}<br/> -->
+Last updated:
+{{ instance.updated_date }}<br/>
+Blog ID:
+{{ instance.id }}<br/>
+<hr/>
+<br/>
+<!--facebook comments-->
+<div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5"></div>
+
+
+
+</div>
+</div>
+</div>
+
+
+{% endblock content %}

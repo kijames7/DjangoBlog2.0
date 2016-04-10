@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+{% block style %}
+h1 {
+  color:#008080;
+}
+form {
+  color:#008080;
+}
+span {
+  color:#008080;
+}
+div {
+  color:#008080;
+}
+h3 {
+  color:#008080;
+}
+body {
+        background-image: url("http://wallpaperfast.com/wp-content/uploads/2013/05/Good-evening-backgrounds-Desktop-for-Mac-wallpaper.jpg");
+        /*background-image: url("http://4.bp.blogspot.com/-S4bebn-H0Fg/UBZ0an93DyI/AAAAAAAAD2k/G9kA9ASTQKU/s1600/animated+wallpaper+for+ipad.png");*/
+}
+{% endblock style%}
+</style>
+
+<div class='col-sm-6 col-sm-offset-3'>
+<h1>{{ title }}</h1>
+<form method='GET' action=''>
+<input type='text' name='query' placeholder='Search posts' value='{{ request.GET.query }}'/>
+<input type='submit' value='Search' />
+</form>
+{% for obj in object_list %}
+<!--make the id a link using a named url       -->
+<div class="row">
+
+<!-- {{ obj.author }}<br/>-->
+<!-- {{ obj.categories }}<br/>
+ -->{{ obj.tags }}<br/>
+{{ obj.updated_date }}<br/>
+<!-- {{ obj.id }}<br/>
+ -->
+  <div class="col-sm-12">
+    <div class="thumbnail">
+    	{% if obj.image %}
+   		<img src='{{ obj.image.url }}' class='img-responsive' />
+    	{% endif %}
+
+<!--    <img src="..." alt="...">-->      
+	    <div class="caption">
+        {% if obj.draft %}<h3>Logged in User Only: Draft</h3>{% endif %} {% if obj.publish > today %}<h3>Logged in User Only: Future Post</h3>{% endif %}
+
+        <h3><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}
+          <!-- </a> <small>{{ obj.created_date|timesince }} ago</small></h3> -->
+          </a> <small>{{ obj.publish }}</small></h3>
+        {% if obj.user.get_full_name %}<p>Author: {{ obj.user.get_full_name }}</p>{% endif %}
+        <p>{{ obj.id|linebreaks|truncatechars:120 }}</p>
+        <p>{{ obj.author|linebreaks|truncatechars:120 }}</p>
+<!--         <p>{{ obj.categories|linebreaks|truncatechars:120 }}</p>
+ -->        <p>{{ obj.body|linebreaks|truncatechars:120 }}</p>
+        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+      </div>
+    </div>
+  </div>
+  <hr/>
+</div>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+</div>
+
+{% endblock content %}
