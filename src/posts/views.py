@@ -83,7 +83,7 @@ def post_list(request):
 
 	#to query by param
 	#instance = get_object_or_404(Post, id=3)
-	paginator = Paginator(queryset_list, 12) # Show 25 contacts per page
+	paginator = Paginator(queryset_list, 5) # Show 25 contacts per page
 	page_request_var = "page" 
 	page = request.GET.get(page_request_var)
 	try:
